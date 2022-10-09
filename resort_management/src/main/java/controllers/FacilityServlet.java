@@ -61,7 +61,7 @@ public class FacilityServlet extends HttpServlet {
         req.setAttribute("period",periodRepositories.findAll());
         req.setAttribute("type",facilityTypeRepositories.findAll());
         req.setAttribute("times",usedTimesRepositories.findAll());
-        req.setAttribute("list",facilityRepositories.findAll());
+        req.setAttribute("list",facilityRepositories.findByCondition(id));
         req.getRequestDispatcher("facilityJSP/FacilityList.jsp").forward(req,resp);
     }
 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+</head>
+<body >
+<!--onload="createcanvas()"-->
+<canvas width="400" height="300" id="createcanvas" onclick="menu()"></canvas>
+<script>
+    let ballX = 1;
+    let ballY = 1;
+    var ball;
+    var bar;
+    function menu()
+    {
+        gameArea.start();
+        ball = new Ball(200,20,10);
+        bar = new Bar(200,250,100,5);
+        setInterval(updateGameArea,20);
+    };
+    var gameArea = {
+        canvas: document.getElementById("createcanvas"),
+        start: function(){
+            this.context = this.canvas.getContext('2d');
+            // this.interval = setInterval(updateGameArea,20)
+            window.addEventListener("keydown",function (e) {
+                gameArea.key = e.key;
+                // alert(gameArea.key)
+            })
+            window.addEventListener("keyup",function (e) {
+                gameArea.key = false;
+            })
+            this.clear = function (){
+                this.context.fillStyle = "blue";
+                this.context.fillRect(0,0,400,300);
+            }
+        }
+    }
+
+    function Ball(x,y,radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        var context = document.getElementById("createcanvas").getContext('2d');
+        this.update = function () {
+            context.beginPath();
+            context.arc(this.x,this.y,this.radius,0,2*Math.PI);
+            context.fillStyle = "white";
+            context.fill();
+            context.stroke();
+        }
+    }
+    function Bar(x,y,width,height) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+        this.speedX = 0;
+        this.speedY = 0;
+        var context = gameArea.context;
+        this.update = function () {
+            context.beginPath();
+            context.fillRect(this.x,this.y,this.width,this.height);
+            context.fillStyle = "white";
+            context.fill();
+            context.stroke();
+        }
+        this.newAction = function (){
+            this.x += this.speedX;
+            this.y += this.speedY;
+        }
+        this.clear = function (){
+            this.x = "";
+            this.y = "";
+            this.width = "";
+            this.height = "";
+        }
+    }
+
+  function updateGameArea() {
+      gameArea.clear();
+      ball.x += ballX;
+      ball.y += ballY;
+      ball.update();
+      // bar
+      bar.speedX = 0;
+      console.log(gameArea.key);
+      if (gameArea.key && gameArea.key == "ArrowLeft" ){
+          bar.speedX --;
+          console.log(bar.speedX)
+      }
+      if (gameArea.key && gameArea.key == "ArrowRight"){
+          bar.speedX ++;
+      }
+      bar.newAction();
+      bar.update();
+      checkBallAction();
+  }
+  function checkBallAction() {
+      if (ball.y == (bar.y - 10) && ball.x >= bar.x && ball.x <= (bar.x + 100)){
+          ballY = -1;
+      if ((bar.speedX < 0 && ballX <= 0)||(bar.speedX > 0 && ballX >= 0)){
+          ballX *= 2;
+      } else if ((bar.speedX > 0 && ballX < 0)||(bar.speedX < 0 && ballX > 0)){
+          ballX *= 0.5;
+      } else ballX *= 1;
+      }
+      if (ball.y >= (bar.y - 8) && ((ball.x >= (bar.x - 10) && ball.x <= (bar.x - 5))
+          || (ball.x <= (bar.x + 10) && ball.x >= (bar.x + 5)))){
+          ballX *= -1;
+      }
+      if (ball.x >= 390){
+          ballX = -1;
+      }
+      if (ball.x <= 5){
+          ballX = 1;
+      }
+      if (ball.y >= 295){
+          // ballY = -1;
+          ball.clear();
+      }
+      if (ball.y <= 5){
+          ballY = 1;
+      }
+  }
+  // window.onload = function()
+
+</script>
+</body>
+</html>
+<!--function moveLeft() {-->
+<!--bar.speedX &#45;&#45;;-->
+<!--}-->
+<!--function moveRight() {-->
+<!--bar.speedX ++;-->
+<!--}-->

@@ -12,7 +12,7 @@ public class FacilityServices implements IBaseServices<Facility> {
     IBaseRepositories<Facility> repositories = new FacilityRepositories();
     @Override
     public List<Facility> findByCondition(String id) {
-        return null;
+        return repositories.findByCondition(id);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class FacilityServices implements IBaseServices<Facility> {
 
     @Override
     public void delete(String id) {
-
+        repositories.delete(id);
     }
 }

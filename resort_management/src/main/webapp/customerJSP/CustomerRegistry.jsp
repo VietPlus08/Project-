@@ -82,6 +82,7 @@
                 </div>
                 <div class="mb-3">
                     <select aria-label="Default select example" class="form-select" name="cusType">
+
                         <c:choose>
                             <c:when test="${item.cusType==null}">
                                 <option selected>Open this select menu</option>

@@ -68,8 +68,13 @@ public class BookServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        super.doPost(req, resp);
+        String action = Optional.ofNullable(req.getParameter("action")).orElse("");
+        switch (action){
+            case "delete":
+                delete(req,resp); break;
+            default:
+                findAll(req,resp);
+        }
     }
 
     @Override
