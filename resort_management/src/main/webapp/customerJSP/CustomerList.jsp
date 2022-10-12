@@ -7,10 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+        .row{
+            margin-bottom: 1rem;
+        }
+        .d-flex{
+            padding-top: 10px;
+        }
+    </style>
 </head>
+
 <body>
-<div class="container">
+<div class="container-fluid text-center">
     <div class="row">
         <div class="col-12">
             <nav class="navbar navbar-expand-lg bg-light">
@@ -21,9 +30,6 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/CustomerServlet">Customer</a>
                             </li>
@@ -39,20 +45,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/ContractServlet">Contract</a>
                             </li>
-
                         </ul>
-                        <div  class="d-flex">
-                            <div>
-                                <a href="/CustomerServlet?action=create" class="btn btn-outline-success" role="button">Create</a>
-                            </div>
-                            <div>
-                                <form action="/CustomerServlet" method="get" class="d-flex" role="search">
-                                    <input type="hidden" name="action" value="search" >
-                                    <input name="id" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit">Search</button>
-                                </form>
-                            </div>
-                        </div>
+                        <form action="/CustomerServlet" method="get" class="d-flex" role="search">
+                            <input type="hidden" name="action" value="search" >
+                            <input name="id" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-info" type="submit">Search</button>
+                        </form>
                     </div>
                 </div>
             </nav>
@@ -60,8 +58,15 @@
 
     </div>
     <div class="row">
-        <div class="col-12">
-            <table class="table">
+        <div class="col">
+            <div class="d-grid gap-2 ">
+                <a href="/CustomerServlet?action=create" class="btn btn-outline-info btn-lg" role="button">
+                    <i class="bi bi-plus-lg"></i> ADD
+                </a>
+            </div>
+        </div>
+        <div class="col-8">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -86,15 +91,29 @@
                         <td>${list.phone}</td>
                         <td>${list.gender}</td>
                         <td>${list.cusType}</td>
-                        <td><a href="/CustomerServlet?action=update&id=${list.id}">UP</a></td>
-                        <td><button onclick="showInfoDelete('${list.id}')" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete">
-                            DEL
-                        </button></td>
+                        <td><a href="/CustomerServlet?action=update&id=${list.id}">
+                            <i class="bi bi-wrench"></i>
+                        </a></td>
+                        <td><a data-bs-target="#delete" data-bs-toggle="modal" href="" onclick="showInfoDelete('${list.id}')" role="button">
+                            <i class="bi bi-x-square"></i>
+                        </a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         </div>
+        <div class="col">
+            1 of 3
+        </div >
     </div>
 </div>
 

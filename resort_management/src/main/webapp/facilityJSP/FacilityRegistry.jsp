@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 
 </head>
-<div class="container">
+<body>
+<div class="container-fluid ">
     <div class="row">
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
-
+        <div class="col-6">
+            <h1>FACILITY REGISTRY</h1>
         </div>
         <div class="col">
             3 of 3
@@ -25,8 +26,8 @@
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
-            <form action="/EmployeeServlet" method="post">
+        <div class="col-6">
+            <form action="/FacilityServlet" method="post">
                 <c:choose>
                     <c:when test="${item.id == null || (item.id != null && message == 'Create is fail!!!')}">
                         <input type="hidden" name="action" value="doCreate">
@@ -42,76 +43,47 @@
                     <c:if test="${error!=nul}">${error.get("id")}</c:if>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">NAME</label>
-                    <input type="text" class="form-control" name="name" value="${item.name}">
-                    <c:if test="${error!=nul}">${error.get("name")}</c:if>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">ADDRESS</label>
-                    <input type="text" class="form-control" name="address" value="${item.address}">
-                    <c:if test="${error!=nul}">${error.get("address")}</c:if>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">DATE</label>
-                    <input type="date" class="form-control" name="date" value="${item.dob}">
-                    <c:if test="${error!=nul}">${error.get("dob")}</c:if>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">TEL</label>
-                    <input type="tel" class="form-control" name="phone" value="${item.phone}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">GENDER</label><BR>
-                    <c:forEach items="${gender}" var="gender">
-                        <input name="gender" type="radio" value= "${gender.id}" ${item.gender == gender.id ? "checked" : ""}>
-                        <label class="form-check-label" >${gender.name}</label> <br>
-                    </c:forEach>
-         </div>
-                <div class="mb-3">
-                    <label class="form-label">DEGREE</label>
-                    <select aria-label="Default select example" class="form-select" name="degree">
-                        <c:choose>
-                            <c:when test="${item.degree == 1}">
-                                <option value="1" selected>Postgraduate</option>
-                                <option value="2">University</option>
-                                <option value="3">High school</option>
-                            </c:when>
-                            <c:when test="${item.degree == 2}">
-                                <option value="1">Postgraduate</option>
-                                <option value="2" selected>University</option>
-                                <option value="3">High school</option>
-                            </c:when>
-                            <c:when test="${item.degree == 3}">
-                                <option value="1">Postgraduate</option>
-                                <option value="2">University</option>
-                                <option value="3" selected>High school</option>
-                            </c:when>
-                            <c:otherwise>
-                                <option selected>Open this select menu</option>
-                                <option value="1">Postgraduate</option>
-                                <option value="2">University</option>
-                                <option value="3">High school</option>
-                            </c:otherwise>
-                        </c:choose>
+                    <label class="form-label">PERIOD</label>
+                    <select aria-label="Default select example" class="form-select" name="period">
+                        <option >Open this select menu</option>
+                        <c:forEach items="${period}" var="period">
+                            <option value="${period.id}" ${period.id == item.period ? "selected" : ""}>${period.name}</option>
+                        </c:forEach>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">POSITION</label>
-                    <select aria-label="Default select example" class="form-select" name="position">
+                    <label class="form-label">AREA</label>
+                    <input type="number" class="form-control" name="area" value="${item.area}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">COMPANION</label>
+                    <input type="number" class="form-control" name="max_person" value="${item.max_person}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">PRICE</label>
+                    <input type="number" class="form-control" name="price" value="${item.price}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">TYPE</label>
+                    <select aria-label="Default select example" class="form-select" name="type">
                         <option >Open this select menu</option>
-                        <c:forEach items="${position}" var="position">
-                            <option value="${position.id}" ${position.id == item.position ? "selected" : ""}>${position.name}</option>
+                        <c:forEach items="${type}" var="type">
+                            <option value="${type.id}" ${type.id == item.type ? "selected" : ""}>${type.name}</option>
 <                        </c:forEach>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">SALARY</label>
-                    <input type="number" class="form-control" name="salary" value="${item.salary}">
+                    <label class="form-label">FLOOR</label>
+                    <input type="number" class="form-control" name="floor" value="${item.floor}">
 <%--                    <c:if test="${error!=nul}">${error.get("salary")}</c:if>--%>
                 </div>
-
+                <div class="mb-3">
+                    <label class="form-label">POOL AREA</label>
+                    <input type="number" class="form-control" name="pool_area" value="${item.pool_area}">
+                    <%--                    <c:if test="${error!=nul}">${error.get("salary")}</c:if>--%>
+                </div>
                 <button type="submit" class="btn btn-primary" >Submit</button>
-                <a href="/CustomerServlet" class="btn btn-secondary" role="button">Back</a>
+                <a href="/FacilityServlet" class="btn btn-secondary" role="button">Back</a>
             </form>
         </div>
         <div class="col">

@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 
 </head>
-<div class="container">
+<body>
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
-
+        <div class="col-6">
+            <H1>BOOK REGISTRY</H1>
         </div>
         <div class="col">
             3 of 3
@@ -25,8 +26,8 @@
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
-            <form action="/EmployeeServlet" method="post">
+        <div class="col-6">
+            <form action="/BookServlet" method="post">
                 <c:choose>
                     <c:when test="${item.id == null || (item.id != null && message == 'Create is fail!!!')}">
                         <input type="hidden" name="action" value="doCreate">
@@ -42,76 +43,32 @@
                     <c:if test="${error!=nul}">${error.get("id")}</c:if>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">NAME</label>
-                    <input type="text" class="form-control" name="name" value="${item.name}">
-                    <c:if test="${error!=nul}">${error.get("name")}</c:if>
+                    <label class="form-label">CUSTOMER NAME</label>
+                    <input type="text" class="form-control" name="customer_name" value="${item.customer_name}">
+                    <c:if test="${error!=nul}">${error.get("customer_name")}</c:if>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">ADDRESS</label>
-                    <input type="text" class="form-control" name="address" value="${item.address}">
-                    <c:if test="${error!=nul}">${error.get("address")}</c:if>
+                    <label class="form-label">FACILITY NAME</label>
+                    <input type="text" class="form-control" name="facility_name" value="${item.facility_name}">
+                    <c:if test="${error!=nul}">${error.get("facility_name")}</c:if>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">DATE</label>
-                    <input type="date" class="form-control" name="date" value="${item.dob}">
-                    <c:if test="${error!=nul}">${error.get("dob")}</c:if>
+                    <label class="form-label">COMPANION</label>
+                    <input type="tel" class="form-control" name="companion" value="${item.companion}">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">TEL</label>
-                    <input type="tel" class="form-control" name="phone" value="${item.phone}">
+                    <label class="form-label">DATE IN</label>
+                    <input type="date" class="form-control" name="date_in" value="${item.date_in}">
+                    <c:if test="${error!=nul}">${error.get("date_in")}</c:if>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">GENDER</label><BR>
-                    <c:forEach items="${gender}" var="gender">
-                        <input name="gender" type="radio" value= "${gender.id}" ${item.gender == gender.id ? "checked" : ""}>
-                        <label class="form-check-label" >${gender.name}</label> <br>
-                    </c:forEach>
-         </div>
-                <div class="mb-3">
-                    <label class="form-label">DEGREE</label>
-                    <select aria-label="Default select example" class="form-select" name="degree">
-                        <c:choose>
-                            <c:when test="${item.degree == 1}">
-                                <option value="1" selected>Postgraduate</option>
-                                <option value="2">University</option>
-                                <option value="3">High school</option>
-                            </c:when>
-                            <c:when test="${item.degree == 2}">
-                                <option value="1">Postgraduate</option>
-                                <option value="2" selected>University</option>
-                                <option value="3">High school</option>
-                            </c:when>
-                            <c:when test="${item.degree == 3}">
-                                <option value="1">Postgraduate</option>
-                                <option value="2">University</option>
-                                <option value="3" selected>High school</option>
-                            </c:when>
-                            <c:otherwise>
-                                <option selected>Open this select menu</option>
-                                <option value="1">Postgraduate</option>
-                                <option value="2">University</option>
-                                <option value="3">High school</option>
-                            </c:otherwise>
-                        </c:choose>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">POSITION</label>
-                    <select aria-label="Default select example" class="form-select" name="position">
-                        <option >Open this select menu</option>
-                        <c:forEach items="${position}" var="position">
-                            <option value="${position.id}" ${position.id == item.position ? "selected" : ""}>${position.name}</option>
-<                        </c:forEach>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">SALARY</label>
-                    <input type="number" class="form-control" name="salary" value="${item.salary}">
-<%--                    <c:if test="${error!=nul}">${error.get("salary")}</c:if>--%>
+                    <label class="form-label">DATE OUT</label>
+                    <input type="date" class="form-control" name="date_out" value="${item.date_out}">
+                    <c:if test="${error!=nul}">${error.get("date_out")}</c:if>
                 </div>
 
                 <button type="submit" class="btn btn-primary" >Submit</button>
-                <a href="/CustomerServlet" class="btn btn-secondary" role="button">Back</a>
+                <a href="/BookServlet" class="btn btn-secondary" role="button">Back</a>
             </form>
         </div>
         <div class="col">

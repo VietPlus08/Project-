@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Facility;
+import models.FacilityDto;
 import models.support_facility.FacilityType;
 import models.support_facility.Period;
 import models.support_facility.UsedTimes;
@@ -17,11 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 @WebServlet (name = "FacilityServlet", urlPatterns = "/FacilityServlet")
 public class FacilityServlet extends HttpServlet {
-    IBaseServices<Facility> facilityRepositories = new FacilityServices();
+    IBaseServices<FacilityDto> facilityRepositories = new FacilityServices();
     ITypeRepositories<Period> periodRepositories = new PeriodRepositories();
     ITypeRepositories<FacilityType> facilityTypeRepositories = new FacilityTypeRepositories();
     ITypeRepositories<UsedTimes> usedTimesRepositories = new UsedTimesRepositories();
@@ -46,7 +48,7 @@ public class FacilityServlet extends HttpServlet {
     private void findAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("period",periodRepositories.findAll());
         req.setAttribute("type",facilityTypeRepositories.findAll());
-        req.setAttribute("times",usedTimesRepositories.findAll());
+        req.setAttribute("time",usedTimesRepositories.findAll());
         req.setAttribute("list",facilityRepositories.findAll());
         req.getRequestDispatcher("facilityJSP/FacilityList.jsp").forward(req,resp);
     }
@@ -60,31 +62,88 @@ public class FacilityServlet extends HttpServlet {
         String id = Optional.ofNullable((req.getParameter("id"))).orElse("");
         req.setAttribute("period",periodRepositories.findAll());
         req.setAttribute("type",facilityTypeRepositories.findAll());
-        req.setAttribute("times",usedTimesRepositories.findAll());
+        req.setAttribute("time",usedTimesRepositories.findAll());
         req.setAttribute("list",facilityRepositories.findByCondition(id));
         req.getRequestDispatcher("facilityJSP/FacilityList.jsp").forward(req,resp);
     }
 
     private void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.setAttribute("gender",genderRepositories.findAll());
-//        req.setAttribute("degree",degreeRepositories.findAll());
-//        req.setAttribute("position",positionRepositories.findAll());
-//        req.getRequestDispatcher("employeeJSP/EmployeeRegistry.jsp").forward(req,resp);
+        req.setAttribute("period",periodRepositories.findAll());
+        req.setAttribute("type",facilityTypeRepositories.findAll());
+        req.setAttribute("time",usedTimesRepositories.findAll());
+        req.getRequestDispatcher("facilityJSP/FacilityRegistry.jsp").forward(req,resp);
     }
 
     private void getInfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String id = req.getParameter("id");
-//        req.setAttribute("item", repositories.findById(id));
-//        req.setAttribute("gender",genderRepositories.findAll());
-//        req.setAttribute("degree",degreeRepositories.findAll());
-//        req.setAttribute("position",positionRepositories.findAll());
-//        req.getRequestDispatcher("employeeJSP/EmployeeRegistry.jsp").forward(req,resp);
+        String id = Optional.ofNullable((req.getParameter("id"))).orElse("");
+        req.setAttribute("period",periodRepositories.findAll());
+        req.setAttribute("type",facilityTypeRepositories.findAll());
+        req.setAttribute("time",usedTimesRepositories.findAll());
+        req.setAttribute("item",facilityRepositories.findById(id));
+        req.getRequestDispatcher("facilityJSP/FacilityRegistry.jsp").forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = Optional.ofNullable(req.getParameter("action")).orElse("");
+        switch (action){
+            case "doUpdate":
+                update(req,resp);
+                break;
+            case "doCreate":
+                createNew(req,resp);
+                break;
+            default:
+                findAll(req,resp);
+        }
+    }
 
-        super.doPost(req, resp);
+    private void createNew(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = (req.getParameter("id"));
+        int period = Integer.parseInt(req.getParameter("period"));
+        int area = Integer.parseInt(req.getParameter("area"));
+        int max_person = Integer.parseInt(req.getParameter("max_person"));
+        int price = Integer.parseInt(req.getParameter("price"));
+        int type = Integer.parseInt(req.getParameter("type"));
+        int floor = Integer.parseInt(req.getParameter("floor"));
+        int pool_area = Integer.parseInt(req.getParameter("pool_area"));
+        FacilityDto facility = new FacilityDto(new Facility(id, period, area, max_person, price, type, floor, pool_area));
+        Map<String, String> error = facilityRepositories.create(facility);
+        if (error.isEmpty()) {
+            findAll(req, resp);
+            return;
+        }
+        req.setAttribute("message", "Create is fail!!!");
+        req.setAttribute("error", error);
+        req.setAttribute("item", facility);
+        req.setAttribute("period",periodRepositories.findAll());
+        req.setAttribute("type",facilityTypeRepositories.findAll());
+        req.setAttribute("time",usedTimesRepositories.findAll());
+        req.getRequestDispatcher("facilityJSP/FacilityRegistry.jsp").forward(req, resp);
+    }
+
+    private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = (req.getParameter("id"));
+        int period = Integer.parseInt(req.getParameter("period"));
+        int area = Integer.parseInt(req.getParameter("area"));
+        int max_person = Integer.parseInt(req.getParameter("max_person"));
+        int price = Integer.parseInt(req.getParameter("price"));
+        int type = Integer.parseInt(req.getParameter("type"));
+        int floor = Integer.parseInt(req.getParameter("floor"));
+        int pool_area = Integer.parseInt(req.getParameter("pool_area"));
+        FacilityDto facility = new FacilityDto(new Facility(id, period, area, max_person, price, type, floor, pool_area));
+        Map<String, String> error = facilityRepositories.update(facility);
+        if (error.isEmpty()) {
+            findAll(req, resp);
+            return;
+        }
+        req.setAttribute("message", "Update is fail!!!");
+        req.setAttribute("error", error);
+        req.setAttribute("item", facility);
+        req.setAttribute("period",periodRepositories.findAll());
+        req.setAttribute("type",facilityTypeRepositories.findAll());
+        req.setAttribute("time",usedTimesRepositories.findAll());
+        req.getRequestDispatcher("facilityJSP/FacilityRegistry.jsp").forward(req, resp);
     }
 
     @Override

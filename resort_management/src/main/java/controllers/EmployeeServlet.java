@@ -95,7 +95,8 @@ public class EmployeeServlet extends HttpServlet {
                 break;
             default:
                 findAll(req,resp);
-        }    }
+        }
+    }
 
     private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = (req.getParameter("id"));

@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 
 </head>
-<div class="container">
+<body>
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
+        <div class="col-6">
+            <h1>EMPLOYEE REGISTRY</h1>
 
         </div>
         <div class="col">
@@ -25,7 +27,7 @@
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
+        <div class="col-6">
             <form action="/EmployeeServlet" method="post">
                 <c:choose>
                     <c:when test="${item.id == null || (item.id != null && message == 'Create is fail!!!')}">

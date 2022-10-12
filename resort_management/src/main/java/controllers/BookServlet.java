@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Map;
 import java.util.Optional;
 
 @WebServlet (name = "BookServlet", urlPatterns = "/BookServlet")
 public class BookServlet extends HttpServlet {
-    IBaseServices<Book> repositories = new BookServices();
+    IBaseServices<Book> bookRepositories = new BookServices();
 
 
     @Override
@@ -35,47 +37,86 @@ public class BookServlet extends HttpServlet {
 
     }
     private void findAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("list",repositories.findAll());
+        req.setAttribute("list", bookRepositories.findAll());
         req.getRequestDispatcher("bookJSP/BookList.jsp").forward(req,resp);
     }
 
     private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = Optional.ofNullable((req.getParameter("id"))).orElse("");
-        repositories.delete(id);
+        bookRepositories.delete(id);
         findAll(req,resp);}
 
     private void findByCondition(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = Optional.ofNullable((req.getParameter("id"))).orElse("");
-        req.setAttribute("list",repositories.findAll());
+        req.setAttribute("list", bookRepositories.findAll());
         req.getRequestDispatcher("bookJSP/BookList.jsp").forward(req,resp);
     }
 
     private void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.setAttribute("gender",genderRepositories.findAll());
-//        req.setAttribute("degree",degreeRepositories.findAll());
-//        req.setAttribute("position",positionRepositories.findAll());
-//        req.getRequestDispatcher("employeeJSP/EmployeeRegistry.jsp").forward(req,resp);
+
+        req.getRequestDispatcher("bookJSP/BookRegistry.jsp").forward(req,resp);
     }
 
     private void getInfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String id = req.getParameter("id");
-//        req.setAttribute("item", repositories.findById(id));
-//        req.setAttribute("gender",genderRepositories.findAll());
-//        req.setAttribute("degree",degreeRepositories.findAll());
-//        req.setAttribute("position",positionRepositories.findAll());
-//        req.getRequestDispatcher("employeeJSP/EmployeeRegistry.jsp").forward(req,resp);
+        String id = req.getParameter("id");
+        req.setAttribute("item", bookRepositories.findById(id));
+
+        req.getRequestDispatcher("bookJSP/BookRegistry.jsp").forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = Optional.ofNullable(req.getParameter("action")).orElse("");
         switch (action){
-            case "delete":
-                delete(req,resp); break;
+            case "doUpdate":
+                update(req,resp);
+                break;
+            case "doCreate":
+                createNew(req,resp);
+                break;
             default:
                 findAll(req,resp);
         }
     }
+
+    private void createNew(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        String customer_name = req.getParameter("customer_name");
+        String facility_name = req.getParameter("facility_name");
+        int companion = Integer.parseInt(req.getParameter("companion"));
+        Date date_in = Date.valueOf(req.getParameter("date_in"));
+        Date date_out = Date.valueOf(req.getParameter("date_out"));
+        Book book = new Book(id,customer_name,facility_name,companion,date_in,date_out);
+        Map<String, String> error = bookRepositories.create(book);
+        if (error.isEmpty()) {
+            findAll(req, resp);
+            return;
+        }
+        req.setAttribute("message", "Create is fail!!!");
+        req.setAttribute("error", error);
+        req.setAttribute("item", book);
+
+        req.getRequestDispatcher("bookJSP/BookRegistry.jsp").forward(req, resp);
+    }
+
+    private void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        String customer_name = req.getParameter("customer_name");
+        String facility_name = req.getParameter("facility_name");
+        int companion = Integer.parseInt(req.getParameter("companion"));
+        Date date_in = Date.valueOf(req.getParameter("date_in"));
+        Date date_out = Date.valueOf(req.getParameter("date_out"));
+        Book book = new Book(id,customer_name,facility_name,companion,date_in,date_out);
+        Map<String, String> error = bookRepositories.update(book);
+        if (error.isEmpty()) {
+            findAll(req, resp);
+            return;
+        }
+        req.setAttribute("message", "Update is fail!!!");
+        req.setAttribute("error", error);
+        req.setAttribute("item", book);
+
+        req.getRequestDispatcher("bookJSP/BookRegistry.jsp").forward(req, resp); }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

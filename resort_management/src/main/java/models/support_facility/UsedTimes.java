@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 
 public class UsedTimes {
-    int id;
-    String name;
+    String id;
+    int times;
 }

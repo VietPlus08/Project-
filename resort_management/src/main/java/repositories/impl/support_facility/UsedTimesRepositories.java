@@ -20,7 +20,7 @@ public class UsedTimesRepositories implements ITypeRepositories<UsedTimes> {
             PreparedStatement st = con.prepareStatement(findAll)){
             ResultSet rs = st.executeQuery();
             while (rs.next()){
-                list.add(new UsedTimes(rs.getInt(1),rs.getString(2)));
+                list.add(new UsedTimes(rs.getString(1),rs.getInt(2)));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

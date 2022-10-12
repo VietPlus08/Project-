@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookRepositories implements IBaseRepositories<Book> {
-    String findAll = "select * from book";
-    String findByCondition = "select * from book where book.id like concat('%',?,'%')";
-    String updateById = "update book set customer_name = ?, facility_name = ?, companion = ?, date_in= ?, date_out = ? where id = ?";
+    String findAll = "select * from book where datediff(curdate(),date_out) <= 0 order by date_in, date_out";
+    String findByCondition = "select * from book where book.id like concat('%',?,'%') and datediff(curdate(),date_out) <= 0 order by date_in, date_out";
+    String updateById = "update book set customer_name = ?, facility_name = ?, companion = ?, date_in = ?, date_out = ? where id = ?";
     String createNew = "insert into book value (?,?,?,?,?,?)";
-    String deleteOject="delete from book where id =?";
+    String deleteOject="delete from book where id = ?";
 
     @Override
     public List<Book> findByCondition(String id) {

@@ -10,12 +10,13 @@
 
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
+        <div class="col-6">
+            <h1>CUSTOMER REGISTRY</h1>
 
         </div>
         <div class="col">
@@ -26,7 +27,7 @@
         <div class="col">
             1 of 3
         </div>
-        <div class="col-8">
+        <div class="col-6">
             <form action="/CustomerServlet" method="post">
                 <c:choose>
                     <c:when test="${item.id == null || (item.id != null && message == 'Create is fail!!!')}">
